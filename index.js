@@ -2,7 +2,6 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const axios = require("axios");
 const cookieParser = require("cookie-parser");
 
 // 변수로 위치를 할당함
