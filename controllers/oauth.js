@@ -19,7 +19,10 @@ module.exports = {
         )
         .then((res) => res.data)
         .then((data) => {
-          res.status(200).send({ accessToken: data.access_token });
+          res
+            .status(200)
+            .send({ accessToken: data.access_token })
+            .cookie("acessToken", data.access_token);
         });
     } else {
       res.status(404).send("no authorization code");
