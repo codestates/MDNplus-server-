@@ -33,21 +33,31 @@ module.exports = {
       res.status(404).send("no authorization code");
     }
   },
+
   kakao: (req, res) => {
-    axios
-      .post(
-        "https://kauth.kakao.com/oauth/token",
-        {
-          grant_type: "authorization_Code",
-          client_id: {},
-          redirect_uri: {},
-          code: {},
-        },
-        {
-          headers: { Accept: "application/json" },
-        }
-      )
-      .then((data) => console.log(data));
+    const code = req.body.authorizationCode;
+    //
+    if (code) {
+      axios
+        .post(
+          // 카카오톡 API => Restful한 방식 이용 그런데, 안 되면 JS SDK 방식을 고려해봐야 할 듯
+          "https://kauth.kakao.com/oauth/token",
+          {
+            grant_type: "authorization_code", //<<이 값으로 고정 말그대로 타입지정.
+            client_id: {}, //클라이언트에서 알려줌
+            redirect_uri: { REDIRECT_URI },
+            code: {},
+          },
+          {
+            headers: { Accept: "application/json" },
+          }
+        )
+        // .then((res) => res.data )
+        .then((data) => console.log(data.access_token)); //token값이 나와야함.
+      // 토큰 할당이 필요하다.
+    } else {
+      res.status(404).send("no authorization code");
+    }
   },
 };
 
