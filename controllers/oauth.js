@@ -7,6 +7,7 @@ const axios = require("axios");
 module.exports = {
   github: (req, res) => {
     console.log("요청은 들어옴");
+    console.log(req.body);
     const code = req.body.authorizationCode;
     if (code) {
       axios
@@ -44,12 +45,9 @@ module.exports = {
           "https://kauth.kakao.com/oauth/token",
           {
             grant_type: "authorization_code", //<<이 값으로 고정 말그대로 타입지정.
-            client_id: {}, //클라이언트에서 알려줌
-            redirect_uri: { REDIRECT_URI },
-            code: {},
-          },
-          {
-            headers: { Accept: "application/json" },
+            client_id: "1d7f1712a8055a8fd526f4d65f38e0aa", //클라이언트에서 알려줌
+            redirect_uri: "http://localhost:3000/kakaoLogin",
+            code: code,
           }
         )
         // .then((res) => res.data )
