@@ -46,12 +46,12 @@ module.exports = {
       code: req.body.authorizationCode,
     };
 
-    // const queryStringBody = Object.keys(bodyData)
-    //   .map((k) => encodeURIComponent(k) + "=" + encodeURI(bodyData[k]))
-    //   .join("&");
+    const queryStringBody = Object.keys(bodyData)
+      .map((k) => encodeURIComponent(k) + "=" + encodeURI(bodyData[k]))
+      .join("&");
 
     axios
-      .post("https://kauth.kakao.com/oauth/token", headers)
+      .post("https://kauth.kakao.com/oauth/token", queryStringBody)
       .then((res) => res.data)
       .then((data) =>
         res.status(200).send({
