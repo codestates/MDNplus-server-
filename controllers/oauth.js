@@ -20,7 +20,7 @@ module.exports = {
         )
         .then((res) => res.data)
         .then((data) => {
-          console.log(data.access_token);
+          console.log(">>>>토큰들어옴", data.access_token);
           if (data.access_token) {
             res
               .status(200)
@@ -36,26 +36,32 @@ module.exports = {
   },
 
   kakao: (req, res) => {
-    const code = req.body.authorizationCode;
-    //
-    if (code) {
-      axios
-        .post(
-          // 카카오톡 API => Restful한 방식 이용 그런데, 안 되면 JS SDK 방식을 고려해봐야 할 듯
-          "https://kauth.kakao.com/oauth/token",
-          {
-            grant_type: "authorization_code", //<<이 값으로 고정 말그대로 타입지정.
-            client_id: "1d7f1712a8055a8fd526f4d65f38e0aa", //클라이언트에서 알려줌
-            redirect_uri: "http://localhost:3000/kakaoLogin",
-            code: code,
-          }
-        )
-        // .then((res) => res.data )
-        .then((data) => console.log(data.access_token)); //token값이 나와야함.
-      // 토큰 할당이 필요하다.
-    } else {
-      res.status(404).send("no authorization code");
-    }
+    console.log(" 카카오 요청 들어옴");
+    console.log(req.body);
+
+    const bodyData = {
+      grant_type: "authorization_code",
+      client_id: "144bf580b6a5f37255716facf6728b0d",
+      redirect_uri: "http://localhost:3000/kakaoLogin",
+      code: req.body.authorizationCode,
+    };
+
+    // const queryStringBody = Object.keys(bodyData)
+    //   .map((k) => encodeURIComponent(k) + "=" + encodeURI(bodyData[k]))
+    //   .join("&");
+
+    axios
+      .post("https://kauth.kakao.com/oauth/token", headers)
+      .then((res) => res.data)
+      .then((data) =>
+        res.status(200).send({
+          data: {
+            accessToken: data.access_token,
+            refreshToken: data.refresh_token,
+          },
+        })
+      )
+      .catch((err) => console.log(err));
   },
 };
 
