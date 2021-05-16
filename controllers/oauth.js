@@ -7,6 +7,7 @@ const axios = require("axios");
 module.exports = {
   github: (req, res) => {
     console.log("요청은 들어옴");
+    console.log(req.body);
     const code = req.body.authorizationCode;
     if (code) {
       axios
@@ -19,8 +20,12 @@ module.exports = {
         )
         .then((res) => res.data)
         .then((data) => {
+          console.log(">>>>토큰들어옴", data.access_token);
           if (data.access_token) {
-            res.status(200).cookie("accessToken", data.access_token, { httpOnly: true }).send({ accessToken: data.access_token });
+            res
+              .status(200)
+              .cookie("accessToken", data.access_token, { httpOnly: true })
+              .send({ accessToken: data.access_token });
           } else {
             console.log("accessToken 없음");
           }
@@ -29,8 +34,9 @@ module.exports = {
       res.status(404).send("no authorization code");
     }
   },
+
   kakao: (req, res) => {
-    console.log("요청 들어옴");
+    console.log(" 카카오 요청 들어옴");
     console.log(req.body);
 
     const bodyData = {
@@ -47,7 +53,14 @@ module.exports = {
     axios
       .post("https://kauth.kakao.com/oauth/token", queryStringBody)
       .then((res) => res.data)
-      .then((data) => res.status(200).send({ data: { accessToken: data.access_token, refreshToken: data.refresh_token } }))
+      .then((data) =>
+        res.status(200).send({
+          data: {
+            accessToken: data.access_token,
+            refreshToken: data.refresh_token,
+          },
+        })
+      )
       .catch((err) => console.log(err));
   },
 };
@@ -55,9 +68,3 @@ module.exports = {
 // res.status(200)
 //       .cookie("refreshToken", refreshToken, { httpOnly: true })
 //       .json({ data: { accessToken: accessToken }, message: "ok" });
-
-// const grant_type = "authorization_code"
-//     const client_id = "144bf580b6a5f37255716facf6728b0d"
-//     const redirect_uri = "http://localhost:3000/kakaoLogin"
-//     const code = req.body.authorizationCode
-//     const client_secret = 'Dkpm5jB8r8PJbsjvWdYkKZnsxNqjNVMp'
