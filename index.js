@@ -20,7 +20,7 @@ const server = async () => {
     const app = express();
 
     app.use(express.json());
-    app.use(express.urlencoded({ extended: false })); // 이 코드 무엇? 같이 공유하기.
+    app.use(express.urlencoded({ extended: false })); // 클라이언트에서 querystring형식으로 요청하는게 없기 때문에 아직까지는 없어도 되는 코드
 
     app.use(
       cors({
@@ -32,8 +32,7 @@ const server = async () => {
 
     app.use(cookieParser());
 
-    app.post("/oauth/github", oauthController.github);
-    app.post("/oauth/kakao", oauthController.kakao);
+    app.post("/oauth", oauthController);
 
     app.listen(port, () => {
       console.log("서버연결이 성공하였습니다!!!!!!!");
