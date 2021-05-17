@@ -5,7 +5,7 @@ const client_secret = process.env.GITHUB_CLIENT_SECRET;
 const axios = require("axios");
 
 module.exports = (req, res) => {
-  // console.log("요청은 들어옴");
+  console.log("요청은 들어옴");
   // console.log(req.body.authorizationCode);
   // console.log("github길이", req.body.authorizationCode.length);
   const code = req.body.authorizationCode;
