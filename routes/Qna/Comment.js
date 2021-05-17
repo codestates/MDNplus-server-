@@ -8,4 +8,4 @@ commentRouter.patch("/", qna.commentController.modifyComment);
 commentRouter.delete("/", qna.commentController.deleteComment);
 commentRouter.get("/", qna.commentController.getComment);
 
-module.exports = { commentRouter };
+module.exports = commentRouter;

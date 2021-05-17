@@ -6,4 +6,4 @@ const section = require("../../controllers/Section");
 mainPageRouter.get("/", section.mainPageController.getMainpage);
 mainPageRouter.patch("/", section.mainPageController.modifyMainpage);
 
-module.exports = { mainPageRouter };
+module.exports = mainPageRouter;

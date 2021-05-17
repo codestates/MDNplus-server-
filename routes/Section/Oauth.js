@@ -5,4 +5,4 @@ const section = require("../../controllers/Section");
 
 oauthRouter.post("/", section.oauthController.oauthLogin);
 
-module.exports = { oauthRouter };
+module.exports = oauthRouter;

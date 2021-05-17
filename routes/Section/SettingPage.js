@@ -12,4 +12,4 @@ settingPageRouter.delete(
   section.settingPageController.deleteMembership
 );
 
-module.exports = { settingPageRouter };
+module.exports = settingPageRouter;

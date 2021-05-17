@@ -5,4 +5,4 @@ const section = require("../../controllers/Section");
 
 myPageRouter.get("/", section.myPageController.getMypage);
 
-module.exports = { myPageRouter };
+module.exports = myPageRouter;

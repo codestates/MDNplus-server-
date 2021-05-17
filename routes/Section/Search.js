@@ -5,4 +5,4 @@ const section = require("../../controllers/Section");
 
 searchRouter.post("/", section.searchController.searchMethod);
 
-module.exports = { searchRouter };
+module.exports = searchRouter;

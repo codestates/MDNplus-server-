@@ -5,4 +5,4 @@ const qna = require("../../controllers/Qna");
 
 searchRouter.post("/", qna.searchController.searchQuestion);
 
-module.exports = { searchRouter };
+module.exports = searchRouter;

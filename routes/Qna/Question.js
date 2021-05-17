@@ -7,4 +7,4 @@ questionRouter.get("/", qna.questionController.getquestionAll);
 questionRouter.post("/", qna.questionController.createQuestion);
 questionRouter.patch("/", qna.questionController.modifyQuestion);
 
-module.exports = { questionRouter };
+module.exports = questionRouter;
