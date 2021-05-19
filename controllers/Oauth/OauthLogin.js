@@ -3,16 +3,17 @@ require("dotenv").config();
 const client_id = process.env.GITHUB_CLIENT_ID;
 const client_secret = process.env.GITHUB_CLIENT_SECRET;
 const axios = require("axios");
-
+axios.default = true;
 // oauth 로그인
 
-// *로직 추가 해야함
 module.exports = (req, res) => {
-  console.log("요청은 들어옴");
-  // console.log(req.body.authorizationCode);
-  // console.log("github길이", req.body.authorizationCode.length);
+  // console.log("요청은 들어옴");
+  // console.log("github code 길이", req.body.authorizationCode.length);
+
+  // oauth 서버에 토큰 요청
   const code = req.body.authorizationCode;
-  // console.log(">>>>>>", code);
+
+  // 깃헙 로그인
   if (!code) {
     return res.status(404).send("no authorization code");
   }
@@ -29,33 +30,45 @@ module.exports = (req, res) => {
           headers: { Accept: "application/json" },
         }
       )
+      // oauth 서버에 user정보 요청
       .then((res) => res.data)
       .then((data) => {
         if (data.access_token) {
-          res.status(200).send({ accessToken: data.access_token });
+          return axios.get("https://api.github.com/user", {
+            headers: { authorization: `token ${data.access_token}` },
+          });
         }
       })
-      .catch((err) => console.log(err));
-  } else {
-    axios
-      .post("https://kauth.kakao.com/oauth/token", null, {
-        params: {
-          grant_type: "authorization_code",
-          client_id: "144bf580b6a5f37255716facf6728b0d",
-          redirect_uri: "http://localhost:3000/kakaoLogin",
-          code: req.body.authorizationCode,
-        },
+      .then((response) => {
+        console.log("여기 깃허브 유저인포 가져옴");
+        console.log("user정보", response.data);
+        //db에서 user정보 확인 후,
+        //없으면 db에 생성후 응답. - 이걸로 전달하면 oauthSignup으로 한번더 요청후 nickName 생성하면 최종 가입.
+        //있으면, 로그인 성공 응답.
       })
-      .then((res) => res.data)
-      .then((data) =>
-        res.status(200).send({
-          data: {
-            accessToken: data.access_token,
-            refreshToken: data.refresh_token,
+      .catch((err) => console.log(err));
+    // 카카오 로그인
+  } else {
+    return (
+      axios
+        .post("https://kauth.kakao.com/oauth/token", null, {
+          params: {
+            grant_type: "authorization_code",
+            client_id: "144bf580b6a5f37255716facf6728b0d",
+            redirect_uri: "http://localhost:3000/kakaoLogin",
+            code: req.body.authorizationCode,
           },
         })
-      )
-      .catch((err) => console.log(err));
+        .then((res) => res.data)
+        .then((data) => {
+          return axios.get("https//kapi.kakao.com/v2/user/me", {
+            headers: { Authorization: `Bearer ${data.access_token}` },
+          });
+        })
+        //여기서 안 받아와짐...
+        .then((userInfo) => console.log(">>>>>>>> 유저 인포 요청 성공!!!"))
+        .catch((err) => console.log(err))
+    );
   }
 };
 

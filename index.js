@@ -4,6 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
+const session = require("express-session");
 
 // 라우터 require
 const routes = require("./routes");
@@ -23,9 +24,6 @@ const server = async () => {
     const port = process.env.PORT || 80;
     const app = express();
 
-    // application/json 요청 파싱
-    app.use(express.json());
-
     // application/x-www-form-urlencoded 요청 파싱
     // app.use(express.urlencoded({ extended: false })); //클라이언트에서 querystring형식으로 요청하는게 없기 때문에 아직까지는 없어도 되는 코드
 
@@ -37,6 +35,26 @@ const server = async () => {
         credentials: true,
       })
     );
+
+    // express-session으로 쿠키 옵션 설정
+    app.use(
+      session({
+        secret: "@mdn+",
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+          domain: "localhost",
+          path: "/",
+          maxAge: 24 * 6 * 60 * 10000,
+          sameSite: "Lax",
+          httpOnly: true,
+          secure: true,
+        },
+      })
+    );
+
+    // application/json 요청 파싱
+    app.use(express.json());
 
     // 쿠키 파싱
     app.use(cookieParser());
