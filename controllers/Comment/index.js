@@ -1,11 +1,13 @@
 const createComment = require("./CreateComment");
 const modifyComment = require("./ModifyComment");
 const deleteComment = require("./DeleteComment");
-const getComment = require("./GetComment");
+const getMyComment = require("./GetMyComment");
+const likeUpAndDown = require("./LikeUpAndDown");
 
 module.exports = {
   createComment,
   modifyComment,
   deleteComment,
-  getComment,
+  getMyComment,
+  likeUpAndDown,
 };

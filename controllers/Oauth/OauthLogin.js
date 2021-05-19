@@ -4,15 +4,19 @@ const client_id = process.env.GITHUB_CLIENT_ID;
 const client_secret = process.env.GITHUB_CLIENT_SECRET;
 const axios = require("axios");
 
+// oauth 로그인
+
+// *로직 추가 해야함
 module.exports = (req, res) => {
   console.log("요청은 들어옴");
   // console.log(req.body.authorizationCode);
   // console.log("github길이", req.body.authorizationCode.length);
   const code = req.body.authorizationCode;
-  console.log(">>>>>>", code);
+  // console.log(">>>>>>", code);
   if (!code) {
-    res.status(404).send("no authorization code");
-  } else if (code.length === 20) {
+    return res.status(404).send("no authorization code");
+  }
+  if (code.length === 20) {
     axios
       .post(
         `https://github.com/login/oauth/access_token`,

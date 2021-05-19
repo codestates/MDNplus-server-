@@ -1,8 +1,8 @@
 const express = require("express");
 const searchRouter = express.Router();
 
-const qna = require("../../controllers/Qna");
+const searchController = require("../controllers/Search");
 
-searchRouter.post("/", qna.searchController.searchQuestion);
+searchRouter.post("/", searchController.search);
 
 module.exports = searchRouter;

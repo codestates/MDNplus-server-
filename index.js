@@ -6,8 +6,7 @@ const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 
 // 라우터 require
-const sectionRoutes = require("./routes/Section");
-const qnaRoutes = require("./routes/Qna");
+const routes = require("./routes");
 
 // mongodb uri 변수 지정, .env에 등록해야함
 const MONGO_URI =
@@ -42,17 +41,13 @@ const server = async () => {
     // 쿠키 파싱
     app.use(cookieParser());
 
-    // section 라우터
-    app.use("/section/oauth", sectionRoutes.oauth);
-    app.use("/section/mainpage", sectionRoutes.mainPage);
-    app.use("/section/mypage", sectionRoutes.myPage);
-    app.use("/section/settingpage", sectionRoutes.settingPage);
-    app.use("/section/search", sectionRoutes.search);
-
-    // qna 라우터
-    app.use("/qna/question", qnaRoutes.question);
-    app.use("/qna/comment", qnaRoutes.comment);
-    app.use("/qna/search", qnaRoutes.search);
+    // 라우터
+    app.use("/oauth", routes.oauth);
+    app.use("/mainpage", routes.mainContent);
+    app.use("/settingpage", routes.userInfo);
+    app.use("/question", routes.question);
+    app.use("/comment", routes.comment);
+    app.use("/search", routes.search);
 
     //서버 포트 연결
     app.listen(port, () => {
