@@ -1,12 +1,15 @@
 const Questions = require("../../models/Questions");
 const Tags = require("../../models/Tags");
 
-// 질문 생성 코드
+// 질문 작성 코드
 module.exports = async (req, res) => {
   try {
     const userId = "60a5aa8ad96cdef21153faec"; // sessionId
     const { title, body, tags } = req.body;
 
+    if (!userId) {
+      return res.status(400).send("not authorization");
+    }
     if (!title || !body) {
       return res.status(400).send("title and body are required");
     }
@@ -23,6 +26,6 @@ module.exports = async (req, res) => {
     }
     res.status(201).send("질문이 등록되었습니다.");
   } catch (err) {
-    res.status(500).send("서버문제");
+    res.status(500).send(err);
   }
 };
