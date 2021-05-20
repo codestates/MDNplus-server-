@@ -31,7 +31,7 @@ const server = async () => {
     app.use(
       cors({
         origin: "http://localhost:3000",
-        methods: "GET, POST, PATCH, DELETE, OPTIONS",
+        methods: "GET, POST, PUT, PATCH, DELETE, OPTIONS",
         credentials: true,
       })
     );
@@ -61,8 +61,8 @@ const server = async () => {
 
     // 라우터
     app.use("/oauth", routes.oauth);
-    app.use("/mainpage", routes.mainContent);
-    app.use("/settingpage", routes.userInfo);
+    app.use("/maincontent", routes.mainContent);
+    app.use("/userinfo", routes.userInfo);
     app.use("/question", routes.question);
     app.use("/comment", routes.comment);
     app.use("/search", routes.search);
