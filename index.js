@@ -66,6 +66,7 @@ const server = async () => {
     app.use("/question", routes.question);
     app.use("/comment", routes.comment);
     app.use("/search", routes.search);
+    app.use("/helpdesk", routes.helpdesk);
 
     //서버 포트 연결
     app.listen(port, () => {

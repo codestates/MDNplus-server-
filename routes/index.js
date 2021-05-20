@@ -4,6 +4,7 @@ const userInfo = require("./UserInfo");
 const search = require("./Search");
 const comment = require("./Comment");
 const question = require("./Question");
+const helpdesk = require("./Helpdesk");
 
 module.exports = {
   oauth,
@@ -12,4 +13,5 @@ module.exports = {
   search,
   comment,
   question,
+  helpdesk,
 };
