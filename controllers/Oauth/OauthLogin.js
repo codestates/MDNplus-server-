@@ -3,7 +3,6 @@ require("dotenv").config();
 const client_id = process.env.GITHUB_CLIENT_ID;
 const client_secret = process.env.GITHUB_CLIENT_SECRET;
 const axios = require("axios");
-axios.default = true;
 // oauth 로그인
 
 module.exports = (req, res) => {
@@ -61,12 +60,14 @@ module.exports = (req, res) => {
         })
         .then((res) => res.data)
         .then((data) => {
-          return axios.get("https//kapi.kakao.com/v2/user/me", {
+          return axios.get("https://kapi.kakao.com/v2/user/me", {
             headers: { Authorization: `Bearer ${data.access_token}` },
           });
         })
-        //여기서 안 받아와짐...
-        .then((userInfo) => console.log(">>>>>>>> 유저 인포 요청 성공!!!"))
+        //db에서 user정보 확인 후,
+        //없으면 db에 생성후 응답. - 이걸로 전달하면 oauthSignup으로 한번더 요청후 nickName 생성하면 최종 가입.
+        //있으면, 로그인 성공 응답.
+        .then((userInfo) => console.log(userInfo))
         .catch((err) => console.log(err))
     );
   }

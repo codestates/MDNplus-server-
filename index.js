@@ -48,7 +48,7 @@ const server = async () => {
           maxAge: 24 * 6 * 60 * 10000,
           sameSite: "Lax",
           httpOnly: true,
-          secure: true,
+          secure: false,
         },
       })
     );
