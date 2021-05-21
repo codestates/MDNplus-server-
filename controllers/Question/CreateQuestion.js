@@ -29,3 +29,5 @@ module.exports = async (req, res) => {
     res.status(500).send(err);
   }
 };
+
+//위 코드 시간 날때 수정하기. => create 사용하는 이유중 하나는 여러객체를 한번에 db에 저장할 수 있다. 현재는 map으로 하나씩 저장을 하기 때문에 수정해야함.
