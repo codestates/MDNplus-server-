@@ -1,5 +1,6 @@
 const Questions = require("../../models/Questions");
 const Tags = require("../../models/Tags");
+
 // 질문 수정 기능
 
 module.exports = async (req, res) => {
@@ -23,7 +24,7 @@ module.exports = async (req, res) => {
     //questionId를 추적하여 이전의 태그를 모두 삭제
     await Tags.deleteMany({ questionId });
 
-    //수정된 태그를 tags 컬렉션에 업데이트
+    //태그가 있다면, 수정된 태그를 tags 컬렉션에 업데이트
     if (tags.length !== 0) {
       await tags.map((tagName) => {
         Tags.create({ tagName, questionId });

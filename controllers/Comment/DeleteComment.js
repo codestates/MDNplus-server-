@@ -17,3 +17,6 @@ module.exports = async (req, res) => {
     res.status(500).send(err);
   }
 };
+
+//+++++++++++++++ 추가해야함.
+// userId로 comments 컬렉션을 find한 후, 결과값이 있으면 delete 아니면 에러
