@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
     const { commentId } = req.body;
 
     if (!userId) {
-      res.status(400).send("not authorizaion");
+      return res.status(400).send("not authorizaion");
     }
     await Comments.deleteOne({ _id: commentId });
 
