@@ -1,6 +1,7 @@
 const Comments = require("../../models/Comments");
 
-// 댓글 작성 코드
+// 댓글 작성 기능
+
 module.exports = async (req, res) => {
   try {
     const userId = "60a5aa8ad96cdef21153faec"; // sessionId

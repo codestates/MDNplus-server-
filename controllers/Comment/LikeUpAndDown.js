@@ -1,5 +1,7 @@
 const Comments = require("../../models/Comments");
 
+// 댓글에 좋아요 Up And Down 기능
+
 module.exports = async (req, res) => {
   try {
     const { commentId, like } = req.body;

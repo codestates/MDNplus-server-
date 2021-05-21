@@ -1,7 +1,7 @@
 const Questions = require("../../models/Questions");
 const Tags = require("../../models/Tags");
 
-// 질문 작성 코드
+// 질문 작성 기능
 module.exports = async (req, res) => {
   try {
     const userId = "60a5aa8ad96cdef21153faec"; // sessionId

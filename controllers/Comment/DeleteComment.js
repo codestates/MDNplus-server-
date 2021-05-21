@@ -1,6 +1,6 @@
 const Comments = require("../../models/Comments");
 
-// 댓글 삭제 코드
+// 댓글 삭제 기능
 
 module.exports = async (req, res) => {
   try {
