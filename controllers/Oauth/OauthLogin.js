@@ -9,7 +9,6 @@ module.exports = (req, res) => {
   // console.log("요청은 들어옴");
   // console.log("github code 길이", req.body.authorizationCode.length);
 
-  // oauth 서버에 토큰 요청
   const code = req.body.authorizationCode;
 
   // 깃헙 로그인
@@ -17,38 +16,42 @@ module.exports = (req, res) => {
     return res.status(404).send("no authorization code");
   }
   if (code.length === 20) {
-    axios
-      .post(
-        `https://github.com/login/oauth/access_token`,
-        {
-          client_id,
-          client_secret,
-          code,
-        },
-        {
-          headers: { Accept: "application/json" },
-        }
-      )
-      // oauth 서버에 user정보 요청
-      .then((res) => res.data)
-      .then((data) => {
-        if (data.access_token) {
-          return axios.get("https://api.github.com/user", {
-            headers: { authorization: `token ${data.access_token}` },
-          });
-        }
-      })
-      .then((response) => {
-        console.log("여기 깃허브 유저인포 가져옴");
-        console.log("user정보", response.data);
-        //db에서 user정보 확인 후,
-        //없으면 db에 생성후 응답. - 이걸로 전달하면 oauthSignup으로 한번더 요청후 nickName 생성하면 최종 가입.
-        //있으면, 로그인 성공 응답.
-      })
-      .catch((err) => console.log(err));
+    // oauth 서버에 토큰 요청
+    return (
+      axios
+        .post(
+          `https://github.com/login/oauth/access_token`,
+          {
+            client_id,
+            client_secret,
+            code,
+          },
+          {
+            headers: { Accept: "application/json" },
+          }
+        )
+        // oauth 서버에 user정보 요청
+        .then((res) => res.data)
+        .then((data) => {
+          if (data.access_token) {
+            return axios.get("https://api.github.com/user", {
+              headers: { authorization: `token ${data.access_token}` },
+            });
+          }
+        })
+        .then((response) => {
+          console.log("여기 깃허브 유저인포 가져옴");
+          console.log("user정보", response.data);
+          //db에서 user정보 확인 후,
+          //없으면 db에 생성후 응답. - 이걸로 전달하면 oauthSignup으로 한번더 요청후 nickName 생성하면 최종 가입.
+          //있으면, 로그인 성공 응답.
+        })
+        .catch((err) => console.log(err))
+    );
     // 카카오 로그인
   } else {
     return (
+      // oauth 서버에 토큰 요청
       axios
         .post("https://kauth.kakao.com/oauth/token", null, {
           params: {
