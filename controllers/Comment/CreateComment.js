@@ -1,5 +1,5 @@
 const Comments = require("../../models/Comments");
-
+const Questions = require("../../models/Questions");
 // 댓글 작성 기능
 
 module.exports = async (req, res) => {
@@ -13,10 +13,17 @@ module.exports = async (req, res) => {
     if (!content) {
       return res.status(400).send("content is required");
     }
-    const comment = new Comments({ questionId, content });
+    const comment = new Comments({ questionId, content, userId });
     await comment.save();
-    res.status(201).send("댓글이 등록되었습니다.");
+    await Questions.findOneAndUpdate(
+      { _id: questionId },
+      { $inc: { commentCount: 1 } },
+      { new: true }
+    );
+    res.status(201).send("댓글이 작성되었습니다");
   } catch (err) {
     res.status(500).send(err);
   }
 };
+
+//comment가 생성될때마다 questions.commentCount +1
