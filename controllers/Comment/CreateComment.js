@@ -5,6 +5,7 @@ const Questions = require("../../models/Questions");
 module.exports = async (req, res) => {
   try {
     const userId = "60a5aa8ad96cdef21153faec"; // sessionId
+    // const { userId } = req.session;
 
     const { questionId, content } = req.body;
 
@@ -21,7 +22,7 @@ module.exports = async (req, res) => {
       { $inc: { commentCount: 1 } },
       { new: true }
     );
-    res.status(201).send("댓글이 작성되었습니다");
+    res.status(201).send(comment);
   } catch (err) {
     res.status(500).send(err);
   }

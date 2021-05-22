@@ -5,7 +5,8 @@ const Tags = require("../../models/Tags");
 
 module.exports = async (req, res) => {
   try {
-    const userId = "60a5aa8ad96cdef21153faec"; // sessionId
+    // const userId = "60a5aa8ad96cdef21153faec"; // sessionId
+    const { userId } = req.session;
     const { questionId, title, body, tags } = req.body;
     //sessionId가 없다면 에러
     if (!userId) {

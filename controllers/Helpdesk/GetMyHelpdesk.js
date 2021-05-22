@@ -8,6 +8,7 @@ const Users = require("../../models/Users");
 module.exports = async (req, res) => {
   try {
     const userId = "60a5aa8ad96cdef21153faec"; //나중에 세션 아이디로 대체
+    // const { userId } = req.session;
 
     if (!userId) {
       return res.status(400).send("not authorization");

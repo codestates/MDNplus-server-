@@ -4,7 +4,8 @@ const Questions = require("../../models/Questions");
 
 module.exports = async (req, res) => {
   try {
-    const userId = "60a5aa8ad96cdef21153faec"; // sessionId
+    // const userId = "60a5aa8ad96cdef21153faec"; // sessionId
+    const { userId } = req.session;
     const { questionId, commentId } = req.body;
 
     if (!userId) {

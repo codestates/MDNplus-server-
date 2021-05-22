@@ -4,7 +4,8 @@ const Comments = require("../../models/Comments");
 
 module.exports = async (req, res) => {
   try {
-    const userId = "60a5aa8ad96cdef21153faec"; // sessionId
+    // const userId = "60a5aa8ad96cdef21153faec"; // sessionId
+    const { userId } = req.session;
     const { commentId, like } = req.body;
     //로그인 안해도 like할 수 있으면 sessionId 필요없음
     if (!userId) {
