@@ -1,3 +1,26 @@
-module.exports = (req, res) => {
-  console.log("알맞은 코드를 작성해주세요");
+const Comments = require("../../models/Comments");
+
+// 댓글 수정 기능
+
+module.exports = async (req, res) => {
+  try {
+    // const userId = "60a5aa8ad96cdef21153faec"; // sessionId
+    const { userId } = req.session;
+    const { commentId, content } = req.body;
+
+    if (!userId) {
+      return res.status(400).send("not authorization");
+    }
+    if (!content) {
+      return res.status(400).send("content is required");
+    }
+    const comment = await Comments.findOneAndUpdate(
+      { _id: commentId },
+      { content },
+      { new: true }
+    );
+    res.status(200).send(comment);
+  } catch (err) {
+    res.status(500).send(err);
+  }
 };

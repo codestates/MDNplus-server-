@@ -5,8 +5,8 @@ const CommentSchema = new Schema(
     content: { type: String, required: true },
     like: { type: Number, default: 0 },
     //관계 짓기
-    usersId: { type: Schema.Types.ObjectId, ref: "users" },
-    questionsId: { type: Schema.Types.ObjectId, ref: "questions" },
+    userId: { type: Schema.Types.ObjectId, ref: "users" },
+    questionId: { type: Schema.Types.ObjectId, ref: "questions" },
   },
   { timestamps: true }
 );
