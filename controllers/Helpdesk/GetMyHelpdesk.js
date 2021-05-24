@@ -6,9 +6,11 @@ const Users = require("../../models/Users");
 // 내가 작성한 질문 , 내가 작성한 댓글 따로 보내주기.
 
 module.exports = async (req, res) => {
+  console.log('마이페이지 요청 들어옴')
   try {
-    const userId = "60a5aa8ad96cdef21153faec"; //나중에 세션 아이디로 대체
-    // const { userId } = req.session;
+    // const userId = "60a5aa8ad96cdef21153faec"; //나중에 세션 아이디로 대체
+    const { userId } = req.session;
+    console.log(">>>세션 아이디>>>",userId)
 
     if (!userId) {
       return res.status(400).send("not authorization");
