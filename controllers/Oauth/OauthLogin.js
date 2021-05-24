@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+const Users = require("../../models/Users");
 const client_id = process.env.GITHUB_CLIENT_ID;
 const client_secret = process.env.GITHUB_CLIENT_SECRET;
 const axios = require("axios");
@@ -39,12 +40,30 @@ module.exports = (req, res) => {
             });
           }
         })
-        .then((response) => {
-          console.log("여기 깃허브 유저인포 가져옴");
-          console.log("user정보", response.data);
-          //db에서 user정보 확인 후,
-          //없으면 db에 생성후 응답. - 이걸로 전달하면 oauthSignup으로 한번더 요청후 nickName 생성하면 최종 가입.
-          //있으면, 로그인 성공 응답.
+        .then(async (userInfo) => {
+          // console.log("여기 깃허브 유저인포 가져옴");
+          // console.log("user정보", userInfo.data.login); //login으로 저장하기
+
+          //db에 유저 정보가 있는지 확인
+          const user = await Users.findOne({
+            githubId: userInfo.data.login,
+          });
+          //유저 정보가 없다면,
+          if (!user) {
+            //db생성 후 sessionId 저장후 응답
+            const userOne = new Users({ githubId: userInfo.data.login });
+            await userOne.save();
+
+            req.session.save(function () {
+              req.session.userId = userOne._id;
+              return res.status(200).send(userOne);
+            });
+          }
+          //유저 정보가 있다면, 바로 응답
+          req.session.save(function () {
+            req.session.userId = user._id;
+            res.status(200).send(user);
+          });
         })
         .catch((err) => console.log(err))
     );
@@ -67,18 +86,38 @@ module.exports = (req, res) => {
             headers: { Authorization: `Bearer ${data.access_token}` },
           });
         })
-        //db에서 user정보 확인 후,
-        //없으면 db에 생성후 응답. - 이걸로 전달하면 oauthSignup으로 한번더 요청후 nickName 생성하면 최종 가입.
-        //있으면, 로그인 성공 응답.
-        .then((userInfo) => console.log(userInfo))
+        .then(async (userInfo) => {
+          const user = await Users.findOne({
+            kakaoId: userInfo.data.email,
+          });
+          //유저 정보가 없다면,
+          if (!user) {
+            //db생성 후 sessionId 저장후 응답
+            const userOne = new Users({ kakaoId: userInfo.data.email });
+            await userOne.save();
+
+            req.session.save(function () {
+              req.session.userId = userOne._id;
+              return res.status(200).send(userOne);
+            });
+          }
+          //유저 정보가 있다면, 바로 응답
+          req.session.save(function () {
+            req.session.userId = user._id;
+            res.status(200).send(user);
+          });
+        })
         .catch((err) => console.log(err))
     );
   }
 };
 
-// console.log(" 카카오 요청 들어옴");
-// console.log(req.body.authorizationCode);
-// console.log("카카오길이", req.body.authorizationCode.length);
+//1.클라이언트에서 서버로 code전달
+//2.서버에서 토큰생성 후 유저정보 가져오기
+//3.유저정보 db에 있는지 확인
+//4.없으면 db에생성후, 방금 생성된 유저정보로 응답 => nickName이 없음
+//5.있으면 기존의 유저정보로 응답 => nickName이 있음
+//6.클라이언트에서는 응답객체에서 nickName이 있을경우 메인페이지 리다이렉션, 없을경우 nickName등록창 리다이렉션
 
 // const bodyData = {
 //   grant_type: "authorization_code",

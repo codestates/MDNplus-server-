@@ -3,7 +3,6 @@ const questionRouter = express.Router();
 
 const questionController = require("../controllers/Question");
 
-questionRouter.get("/", questionController.getQuestionAll);
 questionRouter.post("/", questionController.createQuestion);
 questionRouter.patch("/", questionController.modifyQuestion);
 questionRouter.get("/:questionid", questionController.getQuestionOne);

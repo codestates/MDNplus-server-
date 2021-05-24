@@ -3,7 +3,7 @@ const { Schema, model } = require("mongoose");
 const MainContentSchema = new Schema(
   {
     title: { type: String, required: true },
-    body: { type: String, required: true },
+    body: { type: String },
     count: { type: Number, required: true, default: 0 },
   },
   { timestamps: true }
