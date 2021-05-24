@@ -5,7 +5,7 @@ const userInfoController = require("../controllers/UserInfo");
 
 userInfoRouter.get("/", userInfoController.getImgAndNick);
 userInfoRouter.patch("/img", userInfoController.modifyImg);
-userInfoRouter.delete("/", userInfoController.deleteImg);
+userInfoRouter.delete("/img", userInfoController.deleteImg);
 userInfoRouter.patch("/nick", userInfoController.modifyNick);
 userInfoRouter.delete("/membership", userInfoController.deleteMembership);
 
