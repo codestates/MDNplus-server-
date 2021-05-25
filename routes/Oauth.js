@@ -5,5 +5,6 @@ const oauthController = require("../controllers/Oauth");
 
 oauthRouter.post("/", oauthController.oauthLogin);
 oauthRouter.post("/nick", oauthController.oauthSignup);
+oauthRouter.post("/logout", oauthController.oauthLogout);
 
 module.exports = oauthRouter;
