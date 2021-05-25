@@ -3,8 +3,11 @@ const MainContents = require("../../models/MainContents");
 module.exports = async (req, res) => {
   try {
     // const userId = "60a5aa8ad96cdef21153faec"; // sessionId
+    console.log('글 수정하는 요청 들어옴')
     const { userId } = req.session;
     const { mainContentId, body } = req.body;
+
+    console.log(userId, mainContentId, body)
     if (!userId) {
       return res.status(400).send("not authorization");
     }
@@ -13,6 +16,7 @@ module.exports = async (req, res) => {
       { body, $inc: { count: 1 } },
       { new: true }
     );
+    console.log(main)
     res.status(200).send(main);
   } catch (err) {
     res.status(500).send(err);

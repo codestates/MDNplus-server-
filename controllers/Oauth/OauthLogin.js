@@ -6,12 +6,12 @@ const client_secret = process.env.GITHUB_CLIENT_SECRET;
 const axios = require("axios");
 // oauth 로그인
 
-module.exports = (req, res) => {
+module.exports = async (req, res) => {
+  console.log('로그인 요청 들어옴')
   // console.log("요청은 들어옴");
   // console.log("github code 길이", req.body.authorizationCode.length);
 
   const code = req.body.authorizationCode;
-
   // 깃헙 로그인
   if (!code) {
     return res.status(404).send("no authorization code");
@@ -34,6 +34,7 @@ module.exports = (req, res) => {
         // oauth 서버에 user정보 요청
         .then((res) => res.data)
         .then((data) => {
+          console.log('깃허브에서 토큰 받아옴')
           if (data.access_token) {
             return axios.get("https://api.github.com/user", {
               headers: { authorization: `token ${data.access_token}` },
@@ -49,26 +50,31 @@ module.exports = (req, res) => {
             githubId: userInfo.data.login,
           });
           //유저 정보가 없다면,
-          if (!user) {
+          if (user === null) {
             //db생성 후 sessionId 저장후 응답
+
             const userOne = new Users({ githubId: userInfo.data.login });
             await userOne.save();
-
+            // const id = userOne._id
             req.session.save(function () {
               req.session.userId = userOne._id;
+              console.log(userOne)
               return res.status(200).send(userOne);
             });
+          } else {
+            //유저 정보가 있다면, 바로 응답
+            req.session.save(function () {
+              req.session.userId = user._id;
+              console.log(user)
+              res.status(200).send(user);
+            });
           }
-          //유저 정보가 있다면, 바로 응답
-          req.session.save(function () {
-            req.session.userId = user._id;
-            res.status(200).send(user);
-          });
         })
-        .catch((err) => console.log(err))
+        .catch((err) => console.log('에러'))
     );
     // 카카오 로그인
   } else {
+    console.log('hi')
     return (
       // oauth 서버에 토큰 요청
       axios
@@ -87,13 +93,15 @@ module.exports = (req, res) => {
           });
         })
         .then(async (userInfo) => {
+          console.log('userInfo 들어옴')
+          console.log(userInfo)
           const user = await Users.findOne({
-            kakaoId: userInfo.data.email,
+            kakaoId: userInfo.data.kakao_account.email,
           });
           //유저 정보가 없다면,
           if (!user) {
             //db생성 후 sessionId 저장후 응답
-            const userOne = new Users({ kakaoId: userInfo.data.email });
+            const userOne = new Users({ kakaoId: userInfo.data.kakao_account.email });
             await userOne.save();
 
             req.session.save(function () {
@@ -103,11 +111,13 @@ module.exports = (req, res) => {
           }
           //유저 정보가 있다면, 바로 응답
           req.session.save(function () {
+            console.log('유저 정보가 있을 시, 실행되는 코드')
+            console.log(user._id)
             req.session.userId = user._id;
             res.status(200).send(user);
           });
         })
-        .catch((err) => console.log(err))
+        .catch((err) => console.log('에러뜸'))
     );
   }
 };
