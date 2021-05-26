@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
       });
       const helpdeskContent = await Questions.find({
         title: { $regex: content },
-      });
+      }).populate("userId");
 
       return res.status(200).send({ mainContent, helpdeskContent });
     }
@@ -32,7 +32,7 @@ module.exports = async (req, res) => {
       });
       const helpdeskContent = await Questions.find({
         body: { $regex: content },
-      });
+      }).populate("userId");
 
       return res.status(200).send({ mainContent, helpdeskContent });
     }
