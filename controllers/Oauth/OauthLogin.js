@@ -65,7 +65,8 @@ module.exports = async (req, res) => {
             //유저 정보가 있다면, 바로 응답
             req.session.save(function () {
               req.session.userId = user._id;
-              console.log(user)
+              console.log('깃허브 세션 아이디 저장됨')
+              console.log(req.session.userId)
               res.status(200).send(user);
             });
           }
@@ -112,8 +113,9 @@ module.exports = async (req, res) => {
           //유저 정보가 있다면, 바로 응답
           req.session.save(function () {
             console.log('유저 정보가 있을 시, 실행되는 코드')
-            console.log(user._id)
             req.session.userId = user._id;
+            console.log('카카오 세션 아이디 저장됨')
+              console.log(req.session.userId)
             res.status(200).send(user);
           });
         })
