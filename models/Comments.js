@@ -7,6 +7,7 @@ const CommentSchema = new Schema(
     //관계 짓기
     userId: { type: Schema.Types.ObjectId, ref: "users" },
     questionId: { type: Schema.Types.ObjectId, ref: "questions" },
+    isLike: { type: Boolean, default: true },
   },
   { timestamps: true }
 );
