@@ -21,8 +21,11 @@ module.exports = async (req, res) => {
     //console.log(typeof userId) //string ,현재는 string이지만, 실제 세션ID로 넣어주면 잘 모름.
     const isMyQuestion = String(check.userId) === String(userId) ? true : false;
 
-    const comments = await Comments.find({ questionId: questionid }).populate("userId")
-    const question = await Questions.findById(questionid).populate("userId")
+    const comments = await Comments.find({ questionId: questionid }).populate(
+      "userId"
+    );
+    const question = await Questions.findById(questionid).populate("userId");
+
 
     res.status(200).send({ question, comments, isMyQuestion });
   } catch (err) {

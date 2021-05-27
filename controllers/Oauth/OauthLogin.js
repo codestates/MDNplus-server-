@@ -3,11 +3,12 @@ require("dotenv").config();
 const Users = require("../../models/Users");
 const client_id = process.env.GITHUB_CLIENT_ID;
 const client_secret = process.env.GITHUB_CLIENT_SECRET;
+const kakao_id = process.env.KAKAO_CLIENT_ID;
 const axios = require("axios");
 // oauth 로그인
 
 module.exports = async (req, res) => {
-  console.log('로그인 요청 들어옴')
+  console.log("로그인 요청 들어옴");
   // console.log("요청은 들어옴");
   // console.log("github code 길이", req.body.authorizationCode.length);
 
@@ -34,7 +35,7 @@ module.exports = async (req, res) => {
         // oauth 서버에 user정보 요청
         .then((res) => res.data)
         .then((data) => {
-          console.log('깃허브에서 토큰 받아옴')
+          console.log("깃허브에서 토큰 받아옴");
           if (data.access_token) {
             return axios.get("https://api.github.com/user", {
               headers: { authorization: `token ${data.access_token}` },
@@ -58,31 +59,32 @@ module.exports = async (req, res) => {
             // const id = userOne._id
             req.session.save(function () {
               req.session.userId = userOne._id;
-              console.log(userOne)
+              console.log(userOne);
               return res.status(200).send(userOne);
             });
           } else {
             //유저 정보가 있다면, 바로 응답
             req.session.save(function () {
               req.session.userId = user._id;
-              console.log('깃허브 세션 아이디 저장됨')
-              console.log(req.session.userId)
+              
+              console.log(user);
+
               res.status(200).send(user);
             });
           }
         })
-        .catch((err) => console.log('에러'))
+        .catch((err) => console.log("에러"))
     );
     // 카카오 로그인
   } else {
-    console.log('hi')
+    console.log("hi");
     return (
       // oauth 서버에 토큰 요청
       axios
         .post("https://kauth.kakao.com/oauth/token", null, {
           params: {
             grant_type: "authorization_code",
-            client_id: "144bf580b6a5f37255716facf6728b0d",
+            client_id: kakao_id,
             redirect_uri: "http://localhost:3000/kakaoLogin",
             code: req.body.authorizationCode,
           },
@@ -94,15 +96,17 @@ module.exports = async (req, res) => {
           });
         })
         .then(async (userInfo) => {
-          console.log('userInfo 들어옴')
-          console.log(userInfo)
+          console.log("userInfo 들어옴");
+          console.log(userInfo);
           const user = await Users.findOne({
             kakaoId: userInfo.data.kakao_account.email,
           });
           //유저 정보가 없다면,
           if (!user) {
             //db생성 후 sessionId 저장후 응답
-            const userOne = new Users({ kakaoId: userInfo.data.kakao_account.email });
+            const userOne = new Users({
+              kakaoId: userInfo.data.kakao_account.email,
+            });
             await userOne.save();
 
             req.session.save(function () {
@@ -112,14 +116,17 @@ module.exports = async (req, res) => {
           }
           //유저 정보가 있다면, 바로 응답
           req.session.save(function () {
-            console.log('유저 정보가 있을 시, 실행되는 코드')
+
+            console.log("유저 정보가 있을 시, 실행되는 코드");
+            console.log(user._id);
+
             req.session.userId = user._id;
             console.log('카카오 세션 아이디 저장됨')
               console.log(req.session.userId)
             res.status(200).send(user);
           });
         })
-        .catch((err) => console.log('에러뜸'))
+        .catch((err) => console.log("에러뜸"))
     );
   }
 };
