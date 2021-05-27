@@ -4,10 +4,15 @@ const Comments = require("../../models/Comments");
 //질문을 클릭했을 때, page 조회
 
 module.exports = async (req, res) => {
+  console.log('질문을 클릭했을 때, 요청 들어옴')
   try {
-    const userId = "60a5aa8ad96cdef21153faec"; // sessionId
-    // const { userId } = req.session;
+    // const userId = "60a5aa8ad96cdef21153faec"; // sessionId
+    const { userId } = req.session;
     const { questionid } = req.params;
+
+    console.log(userId, questionid)
+    // const questionid = questionid.slice(1)
+    // console.log
 
     const check = await Questions.findById(questionid);
 
@@ -20,6 +25,7 @@ module.exports = async (req, res) => {
       "userId"
     );
     const question = await Questions.findById(questionid).populate("userId");
+
 
     res.status(200).send({ question, comments, isMyQuestion });
   } catch (err) {
