@@ -3,7 +3,7 @@ const Users = require("../../models/Users");
 module.exports = async (req, res) => {
   try {
     const { userId } = req.session;
-    const { image } = req.body;
+    const { img } = req.body;
 
     if (!userId) {
       return res.status(400).send("not authorization");

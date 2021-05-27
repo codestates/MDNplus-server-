@@ -17,10 +17,11 @@ module.exports = async (req, res) => {
     //제목으로 검색시 응답
     if (type === "title") {
       const mainContent = await MainContents.find({
-        title: { $regex: content },
+        title: { $regex: content, $options: "i" },
       });
+
       const helpdeskContent = await Questions.find({
-        title: { $regex: content },
+        title: { $regex: content, $options: "i" },
       }).populate("userId");
 
       return res.status(200).send({ mainContent, helpdeskContent });
@@ -28,17 +29,19 @@ module.exports = async (req, res) => {
     //내용으로 검색시 응답
     if (type === "body") {
       const mainContent = await MainContents.find({
-        body: { $regex: content },
+        body: { $regex: content, $options: "i" },
       });
       const helpdeskContent = await Questions.find({
-        body: { $regex: content },
+        body: { $regex: content, $options: "i" },
       }).populate("userId");
 
       return res.status(200).send({ mainContent, helpdeskContent });
     }
     //태그로 검색시 응답
     if (type === "tag") {
-      const tags = await Tags.find({ tagName: content }).populate("questionId");
+      const tags = await Tags.find({
+        tagName: { $regex: content, $options: "i" },
+      }).populate("questionId");
       res.status(200).send(tags);
     }
   } catch (err) {
