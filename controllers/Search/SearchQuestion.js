@@ -41,8 +41,11 @@ module.exports = async (req, res) => {
     if (type === "tag") {
       const tags = await Tags.find({
         tagName: { $regex: content, $options: "i" },
-      }).populate("questionId");
-      res.status(200).send(tags);
+      }).populate({ path: "questionId", populate: [{ path: "userId" }] });
+      const question = await tags.map((el) => {
+        return el.questionId;
+      });
+      res.status(200).send({ helpdeskContent: question });
     }
   } catch (err) {
     res.status(500).send(err);
