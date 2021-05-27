@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
 
     const question = await Comments.findById(commentid).populate({
       path: "questionId",
-      populate: [{ path: "userId" }],
+      populate: [{ path: "userId" }], //questionId안의 userId의 데이터도 모두 보이게 하기 위해서 path사용
     });
     const comments = await Comments.find({
       questionId: question.questionId._id,
