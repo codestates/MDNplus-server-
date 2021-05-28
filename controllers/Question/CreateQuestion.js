@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
   try {
     // const userId = "60adf7d76612e6172a4f1aea"; // sessionId
     const { userId } = req.session;
-    const { title, body, tags } = req.body;
+    const { title, body, tags, pureBody } = req.body;
 
     console.log(userId, title, body, tags);
     //sessionId가 없다면 에러
@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
     if (!title || !body) {
       return res.status(400).send("title and body are required");
     }
-    const question = new Questions({ title, body, tags, userId });
+    const question = new Questions({ title, body, tags, userId, pureBody });
     console.log(">>>", question);
 
     // 질문 데이터베이스에 생성

@@ -1,6 +1,5 @@
 const MainContents = require("../../models/MainContents");
 const Questions = require("../../models/Questions");
-const Tags = require("../../models/Tags");
 
 module.exports = async (req, res) => {
   try {
@@ -14,6 +13,7 @@ module.exports = async (req, res) => {
     if (!content) {
       return res.status(400).send("content is required");
     }
+    //전체로 검색시 응답
     if (type === "all") {
       const mainContent = await MainContents.find({
         $or: [
@@ -21,7 +21,14 @@ module.exports = async (req, res) => {
           { body: { $regex: content, $options: "i" } },
         ],
       });
-      const helpdeskContent = await Questions.find({});
+      const helpdeskContent = await Questions.find({
+        $or: [
+          { title: { $regex: content, $options: "i" } },
+          { body: { $regex: content, $options: "i" } },
+          { tags: { $regex: content, $options: "i" } },
+        ],
+      });
+      return res.status(200).send({ mainContent, helpdeskContent });
     }
     //제목으로 검색시 응답
     if (type === "title") {
@@ -48,13 +55,16 @@ module.exports = async (req, res) => {
     }
     //태그로 검색시 응답
     if (type === "tag") {
-      const tags = await Tags.find({
-        tagName: { $regex: content, $options: "i" },
-      }).populate({ path: "questionId", populate: [{ path: "userId" }] });
-      const question = await tags.map((el) => {
-        return el.questionId;
+      // const tags = await Tags.find({
+      //   tagName: { $regex: content, $options: "i" },
+      // }).populate({ path: "questionId", populate: [{ path: "userId" }] });
+      // const question = await tags.map((el) => {
+      //   return el.questionId;
+      // });
+      const helpdeskContent = await Questions.find({
+        tags: { $regex: content, $options: "i" },
       });
-      res.status(200).send({ helpdeskContent: question });
+      res.status(200).send({ helpdeskContent });
     }
   } catch (err) {
     res.status(500).send(err);

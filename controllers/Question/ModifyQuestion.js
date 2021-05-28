@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
   try {
     // const userId = "60adf7d76612e6172a4f1aea"; // sessionId
     const { userId } = req.session;
-    const { questionId, title, body, tags } = req.body;
+    const { questionId, title, body, tags, pureBody } = req.body;
     //sessionId가 없다면 에러
     if (!userId) {
       return res.status(401).send("not authorization");
@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
     //수정된 내용 questions 컬렉션에 업데이트
     const comment = await Questions.findOneAndUpdate(
       { _id: questionId },
-      { title, body, tags },
+      { title, body, tags, pureBody },
       { new: true }
     );
     //questionId를 추적하여 이전의 태그를 모두 삭제
