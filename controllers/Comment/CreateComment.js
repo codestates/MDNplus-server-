@@ -4,13 +4,13 @@ const Questions = require("../../models/Questions");
 
 module.exports = async (req, res) => {
   try {
-    const userId = "60a5aa8ad96cdef21153faec"; // sessionId
-    // const { userId } = req.session;
+    // const userId = "60a5aa8ad96cdef21153faec"; // sessionId
+    const { userId } = req.session;
 
     const { questionId, content } = req.body;
 
     if (!userId) {
-      return res.status(400).send("not authorization");
+      return res.status(401).send("not authorization");
     }
     if (!content) {
       return res.status(400).send("content is required");
@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
       { $inc: { commentCount: 1 } },
       { new: true }
     );
-    res.status(201).send(comment);
+    res.status(201).send("created the comment.");
   } catch (err) {
     res.status(500).send(err);
   }

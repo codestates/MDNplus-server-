@@ -5,12 +5,12 @@ const Tags = require("../../models/Tags");
 
 module.exports = async (req, res) => {
   try {
-    // const userId = "60a5aa8ad96cdef21153faec"; // sessionId
+    // const userId = "60adf7d76612e6172a4f1aea"; // sessionId
     const { userId } = req.session;
     const { questionId, title, body, tags } = req.body;
     //sessionId가 없다면 에러
     if (!userId) {
-      return res.status(400).send("not authorization");
+      return res.status(401).send("not authorization");
     }
     //title, body 둘중 하나라도 없으면 에러
     if (!title || !body) {

@@ -9,6 +9,6 @@ module.exports = async (req, res) => {
   }
   req.session.destroy();
   
-
-  res.status(200).send("회원탈퇴가 되었습니다");
+  res.status(200).send("successful membership withdrawal");
+  
 };

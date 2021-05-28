@@ -6,7 +6,9 @@ const Comments = require("../../models/Comments");
 module.exports = async (req, res) => {
   console.log('질문을 클릭했을 때, 요청 들어옴')
   try {
-    // const userId = "60a5aa8ad96cdef21153faec"; // sessionId
+    // 테스트용
+    // const userId = "60adf7d76612e6172a4f1aea"; // sessionId
+
     const { userId } = req.session;
     const { questionid } = req.params;
 

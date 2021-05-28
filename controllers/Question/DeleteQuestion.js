@@ -5,8 +5,8 @@ const Tags = require("../../models/Tags");
 
 module.exports = async (req, res) => {
   try {
-    const userId = "60a5aa8ad96cdef21153faec"; // sessionId
-    // const { userId } = req.session;
+    // const userId = "60a5aa8ad96cdef21153faec"; // sessionId
+    const { userId } = req.session;
     const { questionId } = req.body;
 
     if (!userId) {
@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
     await Questions.deleteOne({ _id: questionId });
     await Comments.deleteMany({ questionId });
     await Tags.deleteMany({ questionId });
-    res.status(400).send("질문이 삭제되었습니다");
+    res.status(400).send("deleted the question.");
   } catch (err) {
     res.status(500).send(err);
   }

@@ -3,12 +3,12 @@ const Questions = require("../../models/Questions");
 // 댓글에 좋아요 Up And Down 기능
 
 module.exports = async (req, res) => {
-  console.log('좋아요 처리해주는 요청 들어옴')
+  console.log("좋아요 처리해주는 요청 들어옴");
   try {
     // const userId = "60a5aa8ad96cdef21153faec"; // sessionId
     const { userId } = req.session;
     const { questionId, like } = req.body;
-    console.log(userId, questionId, like)
+    console.log(userId, questionId, like);
     //로그인 안해도 like할 수 있으면 sessionId 필요없음
     if (!userId) {
       return res.status(400).send("not authoirzation");
