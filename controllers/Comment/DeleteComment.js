@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
     const { questionId, commentId } = req.body;
 
     if (!userId) {
-      return res.status(400).send("not authorizaion");
+      return res.status(401).send("not authorizaion");
     }
     await Comments.deleteOne({ _id: commentId });
     await Questions.findOneAndUpdate(
@@ -17,7 +17,7 @@ module.exports = async (req, res) => {
       { $inc: { commentCount: -1 } },
       { new: true }
     );
-    res.status(200).send("댓글이 삭제되었습니다");
+    res.status(200).send("deleted the comment");
   } catch (err) {
     res.status(500).send(err);
   }

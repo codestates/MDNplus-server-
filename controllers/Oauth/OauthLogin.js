@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
   const code = req.body.authorizationCode;
   // 깃헙 로그인
   if (!code) {
-    return res.status(404).send("no authorization code");
+    return res.status(401).send("no authorization code");
   }
   if (code.length === 20) {
     // oauth 서버에 토큰 요청
@@ -71,7 +71,7 @@ module.exports = async (req, res) => {
             });
           }
         })
-        .catch((err) => console.log("에러"))
+        .catch((err) => res.status(500).send(err))
     );
     // 카카오 로그인
   } else {
