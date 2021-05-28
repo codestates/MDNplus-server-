@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
     // const userId = "60a5aa8ad96cdef21153faec"; // sessionId
     const { userId } = req.session;
 
-    const { questionId, content } = req.body;
+    const { questionId, content, pureContent } = req.body;
 
     if (!userId) {
       return res.status(401).send("not authorization");
@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
     if (!content) {
       return res.status(400).send("content is required");
     }
-    const comment = new Comments({ questionId, content, userId });
+    const comment = new Comments({ questionId, content, userId, pureContent });
     await comment.save();
     await Questions.findOneAndUpdate(
       { _id: questionId },
