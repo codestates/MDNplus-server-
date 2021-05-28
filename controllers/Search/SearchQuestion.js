@@ -14,6 +14,15 @@ module.exports = async (req, res) => {
     if (!content) {
       return res.status(400).send("content is required");
     }
+    if (type === "all") {
+      const mainContent = await MainContents.find({
+        $or: [
+          { title: { $regex: content, $options: "i" } },
+          { body: { $regex: content, $options: "i" } },
+        ],
+      });
+      const helpdeskContent = await Questions.find({});
+    }
     //제목으로 검색시 응답
     if (type === "title") {
       const mainContent = await MainContents.find({
