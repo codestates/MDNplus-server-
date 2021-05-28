@@ -4,6 +4,7 @@ const QuestionSchema = new Schema(
   {
     title: { type: String, required: true },
     body: { type: String, required: true },
+    pureBody: { type: String },
     tags: { type: Array },
     commentCount: { type: Number, default: 0 },
     like: { type: Number, default: 0 },
