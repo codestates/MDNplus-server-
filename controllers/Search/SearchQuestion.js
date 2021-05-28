@@ -27,7 +27,7 @@ module.exports = async (req, res) => {
           { body: { $regex: content, $options: "i" } },
           { tags: { $regex: content, $options: "i" } },
         ],
-      });
+      }).populate("userId");
       return res.status(200).send({ mainContent, helpdeskContent });
     }
     //제목으로 검색시 응답
