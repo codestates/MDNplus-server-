@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
     const { commentId, content } = req.body;
 
     if (!userId) {
-      return res.status(400).send("not authorization");
+      return res.status(401).send("not authorization");
     }
     if (!content) {
       return res.status(400).send("content is required");

@@ -8,7 +8,7 @@ const Users = require("../../models/Users");
 module.exports = async (req, res) => {
   console.log("마이페이지 요청 들어옴");
   try {
-    // const userId = "60a5aa8ad96cdef21153faec"; //나중에 세션 아이디로 대체
+    // const userId = "60ab678a96366d01a6d7e14b"; //나중에 세션 아이디로 대체
     const { userId } = req.session;
     console.log(">>>세션 아이디>>>", userId);
 

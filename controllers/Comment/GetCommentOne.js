@@ -4,8 +4,8 @@ const Comments = require("../../models/Comments");
 
 module.exports = async (req, res) => {
   try {
-    const userId = "60a5aa8ad96cdef21153faec"; // sessionId
-    // const { userId } = req.session;
+    // const userId = "60a5aa8ad96cdef21153faec"; // sessionId
+    const { userId } = req.session;
     const { commentid } = req.params;
 
     const question = await Comments.findById(commentid).populate({
