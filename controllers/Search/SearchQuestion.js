@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
       return res.status(400).send("content is required");
     }
     //전체로 검색시 응답
-    if (type === "all") {
+    if (type === "전체") {
       const mainContent = await MainContents.find({
         $or: [
           { title: { $regex: content, $options: "i" } },
@@ -31,7 +31,7 @@ module.exports = async (req, res) => {
       return res.status(200).send({ mainContent, helpdeskContent });
     }
     //제목으로 검색시 응답
-    if (type === "title") {
+    if (type === "제목") {
       const mainContent = await MainContents.find({
         title: { $regex: content, $options: "i" },
       });
@@ -43,7 +43,7 @@ module.exports = async (req, res) => {
       return res.status(200).send({ mainContent, helpdeskContent });
     }
     //내용으로 검색시 응답
-    if (type === "body") {
+    if (type === "내용") {
       const mainContent = await MainContents.find({
         body: { $regex: content, $options: "i" },
       });
@@ -54,7 +54,7 @@ module.exports = async (req, res) => {
       return res.status(200).send({ mainContent, helpdeskContent });
     }
     //태그로 검색시 응답
-    if (type === "tag") {
+    if (type === "태그") {
       // const tags = await Tags.find({
       //   tagName: { $regex: content, $options: "i" },
       // }).populate({ path: "questionId", populate: [{ path: "userId" }] });
