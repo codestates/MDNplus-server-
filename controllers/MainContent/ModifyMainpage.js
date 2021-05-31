@@ -13,7 +13,7 @@ module.exports = async (req, res) => {
     }
     const main = await MainContents.findOneAndUpdate(
       { _id: mainContentId },
-      { body, $inc: { count: 1 }, purebody },
+      { body, $inc: { count: 1 }, pureBody },
       { new: true }
     );
     console.log(main);
