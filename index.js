@@ -9,19 +9,15 @@ const session = require("express-session");
 // 라우터 require
 const routes = require("./routes");
 
-// mongodb uri 변수 지정, .env에 등록해야함
-const MONGO_URI =
-  "mongodb+srv://gil0127:BO3forever@gil0127.9t25v.mongodb.net/mdn+?retryWrites=true&w=majority";
-
 // App - mongoose 연결, mongoose.connect는 promise를 리턴하기 때문에 async await 사용.
 const server = async () => {
   try {
-    await mongoose.connect(MONGO_URI, {
+    await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
     console.log("데이터베이스 연결 성공");
-    const port = process.env.PORT || 8080;
+    const port = process.env.PORT || 80;
     const app = express();
 
     // application/x-www-form-urlencoded 요청 파싱
