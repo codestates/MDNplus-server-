@@ -1,5 +1,7 @@
 # MDN+/Server 에 오신것을 환영합니다 😄
 
+![MDN1](https://user-images.githubusercontent.com/76875723/120945355-b2364680-c773-11eb-9259-a0574695c95e.png)
+
 ### 저희는 이렇게 개발하고 있습니다.
 
 ![스택 디자인 (1)](https://user-images.githubusercontent.com/76520075/118232974-46dabb00-b4cc-11eb-8d45-0949c7e06667.jpg)
